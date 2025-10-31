@@ -1,0 +1,38 @@
+# nixpacks.toml 
+ 
+[variables] 
+# Mantém o comportamento atual do build 
+NODE_ENV = "production" 
+NPM_CONFIG_PRODUCTION = "false" 
+NIXPACKS_SPA_OUTPUT_DIR = "dist" 
+
+# Se quiser controlar a versão do Node aqui: 
+# (altere para nodejs_20 se seu projeto exigir Node 20) 
+# Dica: mantenha alinhado com seu lockfile. 
+[phases.setup] 
+nixPkgs = ["nodejs_22", "bun"] 
+# Pacotes úteis durante o build (opcional) 
+aptPkgs = ["curl", "wget"] 
+
+[phases.caddy] 
+dependsOn = ["setup"] 
+nixPkgs = ["caddy"] 
+# Formata o Caddyfile que vamos incluir em /assets 
+cmds = [ 
+  "caddy fmt --overwrite /assets/Caddyfile" 
+] 
+
+[phases.install] 
+dependsOn = ["setup"] 
+# Use npm ci para reprodutibilidade (mantém seu fluxo atual) 
+cmds = ["npm ci"] 
+# cache de bun é opcional aqui; npm já é rápido com layer cache 
+
+[phases.build] 
+dependsOn = ["install"] 
+# Build com Vite (mantendo bun, como no seu log) 
+cmds = ["bun run build"] 
+
+[start] 
+# Servir a pasta dist com Caddy (SPA-friendly) 
+cmd = "exec caddy run --config /assets/Caddyfile --adapter caddyfile 2>&1"
