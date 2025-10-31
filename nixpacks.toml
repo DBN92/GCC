@@ -2,6 +2,8 @@
 [variables]
 NODE_ENV = "production"
 PORT = "4173"
+VITE_SUPABASE_URL = "https://hjjzecodtfnerkxslzpd.supabase.co"
+VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhqanplY29kdGZuZXJreHNsenBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDM4MzQsImV4cCI6MjA3NzQxOTgzNH0.sZ9NG-06i-5YTM3nNrYiQ5LDx9yQBh0YBb0WicGmams"
 
 [phases.setup]
 nixPkgs = ["nodejs_20", "curl"]
