@@ -39,6 +39,21 @@ const AppRouter = () => {
       console.log('  searchParams:', searchParams.toString());
       console.log('  full URL:', window.location.href);
       
+      // Verificar configuração global primeiro
+      const globalConfig = (window as any).APP_CONFIG;
+      console.log('  globalConfig:', globalConfig);
+      if (globalConfig?.forceApp) {
+        console.log('🔧 GLOBAL CONFIG: Forçando app via configuração global:', globalConfig.forceApp);
+        if (globalConfig.forceApp === 'data-owner-portal') {
+          setCurrentApp(AppType.DATA_OWNER_PORTAL);
+          return;
+        }
+        if (globalConfig.forceApp === 'consent-system') {
+          setCurrentApp(AppType.CONSENT_SYSTEM);
+          return;
+        }
+      }
+      
       // Verificar parâmetro de URL para forçar uma aplicação específica
       const appParam = searchParams.get('app');
       console.log('  appParam:', appParam);
