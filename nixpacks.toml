@@ -1,9 +1,10 @@
 # Nixpacks Configuration for Production Build
 [variables]
 NODE_ENV = "production"
+PORT = "4173"
 
 [phases.setup]
-nixPkgs = ["nodejs_20"]
+nixPkgs = ["nodejs_20", "curl"]
 
 [phases.install]
 cmds = ["npm ci --include=dev"]
