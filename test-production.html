@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Produção - GCC Imonitore</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border-left: 4px solid;
+        }
+        .success {
+            background-color: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border-color: #17a2b8;
+            color: #0c5460;
+        }
+        #logs {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Teste de Produção - GCC Imonitore</h1>
+        
+        <div class="test-result info">
+            <strong>URL de Produção:</strong> https://gccimonitore.danieltechsolutions.com
+        </div>
+
+        <button onclick="testProduction()">🚀 Testar Aplicação</button>
+        <button onclick="clearLogs()">🧹 Limpar Logs</button>
+        
+        <h2>📊 Resultados dos Testes:</h2>
+        <div id="results"></div>
+        
+        <h2>📝 Logs de Console:</h2>
+        <div id="logs"></div>
+    </div>
+
+    <script>
+        let logs = [];
+        
+        function addLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            logs.push(`[${timestamp}] ${message}`);
+            updateLogsDisplay();
+        }
+        
+        function updateLogsDisplay() {
+            document.getElementById('logs').textContent = logs.join('\n');
+        }
+        
+        function clearLogs() {
+            logs = [];
+            updateLogsDisplay();
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        function addResult(message, type) {
+            const resultsDiv = document.getElementById('results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${type}`;
+            resultDiv.innerHTML = message;
+            resultsDiv.appendChild(resultDiv);
+        }
+        
+        async function testProduction() {
+            addLog('🚀 Iniciando teste da aplicação de produção...');
+            clearResults();
+            
+            try {
+                // Teste 1: Verificar se o HTML está sendo servido
+                addLog('📡 Testando se o HTML está sendo servido...');
+                const response = await fetch('https://gccimonitore.danieltechsolutions.com', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                if (response.ok) {
+                    addResult('✅ HTML está sendo servido corretamente', 'success');
+                    addLog('✅ HTML carregado com sucesso');
+                    
+                    const html = await response.text();
+                    
+                    // Teste 2: Verificar se o JavaScript está referenciado
+                    const jsMatch = html.match(/index-[^.]*\.js/);
+                    if (jsMatch) {
+                        addResult(`✅ JavaScript encontrado: ${jsMatch[0]}`, 'success');
+                        addLog(`✅ JavaScript encontrado: ${jsMatch[0]}`);
+                    } else {
+                        addResult('❌ JavaScript não encontrado no HTML', 'error');
+                        addLog('❌ JavaScript não encontrado no HTML');
+                    }
+                    
+                    // Teste 3: Verificar se contém elementos React
+                    if (html.includes('id="root"')) {
+                        addResult('✅ Elemento root do React encontrado', 'success');
+                        addLog('✅ Elemento root do React encontrado');
+                    } else {
+                        addResult('❌ Elemento root do React não encontrado', 'error');
+                        addLog('❌ Elemento root do React não encontrado');
+                    }
+                    
+                    // Teste 4: Verificar metadados
+                    if (html.includes('Open Consent Imonitore')) {
+                        addResult('✅ Metadados da aplicação encontrados', 'success');
+                        addLog('✅ Metadados da aplicação encontrados');
+                    } else {
+                        addResult('❌ Metadados da aplicação não encontrados', 'error');
+                        addLog('❌ Metadados da aplicação não encontrados');
+                    }
+                    
+                } else {
+                    addResult(`❌ Erro HTTP: ${response.status} ${response.statusText}`, 'error');
+                    addLog(`❌ Erro HTTP: ${response.status} ${response.statusText}`);
+                }
+                
+            } catch (error) {
+                addResult(`❌ Erro de rede: ${error.message}`, 'error');
+                addLog(`❌ Erro de rede: ${error.message}`);
+            }
+            
+            // Teste 5: Simular abertura em iframe para testar CORS
+            addLog('🔒 Testando políticas de CORS...');
+            try {
+                const iframe = document.createElement('iframe');
+                iframe.src = 'https://gccimonitore.danieltechsolutions.com';
+                iframe.style.width = '1px';
+                iframe.style.height = '1px';
+                iframe.style.position = 'absolute';
+                iframe.style.left = '-9999px';
+                
+                iframe.onload = function() {
+                    addResult('✅ Aplicação carrega em iframe (sem restrições CORS severas)', 'success');
+                    addLog('✅ Aplicação carrega em iframe');
+                    document.body.removeChild(iframe);
+                };
+                
+                iframe.onerror = function() {
+                    addResult('⚠️ Possíveis restrições de CORS ou CSP', 'error');
+                    addLog('⚠️ Erro ao carregar em iframe');
+                    document.body.removeChild(iframe);
+                };
+                
+                document.body.appendChild(iframe);
+                
+                // Remover iframe após 5 segundos se não houver resposta
+                setTimeout(() => {
+                    if (document.body.contains(iframe)) {
+                        addResult('⏱️ Timeout no teste de iframe', 'info');
+                        addLog('⏱️ Timeout no teste de iframe');
+                        document.body.removeChild(iframe);
+                    }
+                }, 5000);
+                
+            } catch (error) {
+                addResult(`❌ Erro no teste de CORS: ${error.message}`, 'error');
+                addLog(`❌ Erro no teste de CORS: ${error.message}`);
+            }
+            
+            addLog('🏁 Teste concluído');
+        }
+        
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+        
+        // Executar teste automaticamente ao carregar a página
+        window.onload = function() {
+            addLog('🌐 Página de teste carregada');
+            addLog('💡 Clique em "Testar Aplicação" para verificar o status da produção');
+        };
+    </script>
+</body>
+</html>

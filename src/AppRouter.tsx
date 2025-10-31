@@ -81,16 +81,6 @@ const AppRouter = () => {
         return;
       }
 
-      // Detectar hostname específico de produção - FORÇAR SEMPRE
-      if (hostname === 'gccimonitore.danieltechsolutions.com' || 
-          hostname.includes('gccimonitore') || 
-          hostname.includes('danieltechsolutions')) {
-        console.log('✅ FORÇANDO Portal do Titular para hostname de produção:', hostname);
-        console.log('🚀 Carregando Portal do Titular OBRIGATORIAMENTE');
-        setCurrentApp(AppType.DATA_OWNER_PORTAL);
-        return;
-      }
-
       // Detectar baseado no path
       if (pathname.startsWith('/portal') || pathname.startsWith('/titular')) {
         console.log('✅ Detectado via pathname: DATA_OWNER_PORTAL');
