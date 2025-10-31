@@ -37,6 +37,7 @@ const AppRouter = () => {
       console.log('  hostname:', hostname);
       console.log('  pathname:', pathname);
       console.log('  searchParams:', searchParams.toString());
+      console.log('  full URL:', window.location.href);
       
       // Verificar parâmetro de URL para forçar uma aplicação específica
       const appParam = searchParams.get('app');
@@ -68,6 +69,7 @@ const AppRouter = () => {
       // Detectar hostname específico de produção
       if (hostname === 'gccimonitore.danieltechsolutions.com') {
         console.log('✅ Detectado hostname de produção: DATA_OWNER_PORTAL');
+        console.log('🚀 Carregando Portal do Titular para produção');
         setCurrentApp(AppType.DATA_OWNER_PORTAL);
         return;
       }
@@ -133,14 +135,17 @@ const AppRouter = () => {
 
     // Se uma aplicação específica foi detectada, renderizá-la
     if (currentApp === AppType.DATA_OWNER_PORTAL) {
+      console.log('🎯 Renderizando DataOwnerPortal');
       return <DataOwnerPortal />;
     }
 
     if (currentApp === AppType.CONSENT_SYSTEM) {
+      console.log('🎯 Renderizando ConsentSystem');
       return <ConsentSystem />;
     }
 
     // Seletor de aplicação
+    console.log('🎯 Renderizando seletor de aplicação');
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-6">
         <div className="max-w-4xl mx-auto">
