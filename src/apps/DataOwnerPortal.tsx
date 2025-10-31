@@ -16,13 +16,17 @@ function DataOwnerPortalContent() {
       // Verificar se já foi feito logout manual (flag no localStorage)
       const hasLoggedOut = localStorage.getItem('data_owner_logged_out');
       
+      // Limpar dados antigos que podem estar causando conflito
       if (!user && !isLoading && !hasLoggedOut) {
+        // Limpar possível usuário antigo com role incorreto
+        localStorage.removeItem('lgpd_auth_user');
+        
         console.log('🔄 Iniciando login automático para CPF 12345678900');
         
         const govBrData = {
           cpf: '12345678900',
           name: 'João Silva',
-          email: 'joao.silva@exemplo.com',
+          email: 'joao.silva.titular@exemplo.com', // Email diferente para evitar conflito
           phone: '(11) 99999-9999',
           birthDate: '1990-01-01'
         };

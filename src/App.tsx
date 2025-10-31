@@ -20,9 +20,9 @@ function App() {
         border: '5px solid #000000',
         boxShadow: '0 0 20px rgba(255,0,0,0.8)'
       }}>
-        🔥 DEPLOY TEST v4.0 FINAL - {new Date().toLocaleString('pt-BR')} 🔥
+        🔥 DEPLOY TEST v5.0 FINAL - {new Date().toLocaleString('pt-BR')} 🔥
         <br />
-        NIXPACKS.TOML ATUALIZADO + COOLIFY CONFIG
+        CORREÇÃO ROLE CONFLICT + NIXPACKS.TOML ATUALIZADO + COOLIFY CONFIG
       </div>
       <AppRouter />
     </>
