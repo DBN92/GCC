@@ -27,8 +27,12 @@ const AppRouter = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    console.log('🚀 AppRouter useEffect iniciado');
+    
     // Detectar qual aplicação carregar baseado na URL ou configuração
     const detectApp = () => {
+      console.log('🔍 Iniciando detecção de aplicação...');
+      
       const hostname = window.location.hostname;
       const pathname = window.location.pathname;
       const searchParams = new URLSearchParams(window.location.search);
@@ -46,6 +50,7 @@ const AppRouter = () => {
         console.log('✅ FORÇANDO Portal do Titular para hostname de produção:', hostname);
         console.log('🚀 Carregando Portal do Titular OBRIGATORIAMENTE');
         setCurrentApp(AppType.DATA_OWNER_PORTAL);
+        console.log('✅ Estado setCurrentApp definido para DATA_OWNER_PORTAL');
         return;
       }
       
@@ -121,8 +126,11 @@ const AppRouter = () => {
       setCurrentApp(null);
     };
 
+    console.log('🔄 Chamando detectApp()...');
     detectApp();
+    console.log('🔄 detectApp() executado, definindo isLoading = false');
     setIsLoading(false);
+    console.log('✅ useEffect concluído');
   }, []);
 
   const handleAppSelection = (appType: AppType) => {
@@ -141,7 +149,10 @@ const AppRouter = () => {
   };
 
   const renderContent = () => {
+    console.log('🎨 renderContent chamado - isLoading:', isLoading, 'currentApp:', currentApp);
+    
     if (isLoading) {
+      console.log('⏳ Renderizando tela de loading');
       return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
