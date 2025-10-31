@@ -28,12 +28,12 @@ function DataOwnerPortalContent() {
         await new Promise(resolve => setTimeout(resolve, 500));
         
         console.log('🔄 Iniciando login automático para CPF 12345678900');
-        console.log('📧 Email que será usado:', 'joao.silva.titular@exemplo.com');
+        console.log('📧 Email que será usado:', 'joao@exemplo.com');
         
         const govBrData = {
           cpf: '12345678900',
           name: 'João Silva',
-          email: 'joao.silva.titular@exemplo.com', // Email diferente para evitar conflito
+          email: 'joao@exemplo.com', // Email diferente para evitar conflito
           phone: '(11) 99999-9999',
           birthDate: '1990-01-01'
         };
