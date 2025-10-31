@@ -1,0 +1,21 @@
+# Configuração otimizada para Coolify
+# Baseada nas melhores práticas do DEPLOYMENT.md
+
+[variables]
+NODE_ENV = "production"
+NPM_CONFIG_PRODUCTION = "false"
+PORT = "4173"
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+dependsOn = ["setup"]
+cmds = ["npm ci --include=dev"]
+
+[phases.build]
+dependsOn = ["install"]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm run preview -- --host 0.0.0.0 --port 4173"
