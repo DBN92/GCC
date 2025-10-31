@@ -15,4 +15,4 @@ cmds = ["npm ci --include=dev"]
 cmds = ["npm run build"]
 
 [start]
-cmd = "npx serve dist -l 4173"
+cmd = "npx http-server dist -p 4173 -a 0.0.0.0"
