@@ -910,9 +910,27 @@ class DatabaseService {
 
   constructor() {
     // Em desenvolvimento, usar banco local por padrão
-    // Em produção, usar Supabase
+    // Em produção, usar Supabase com fallback para localStorage
     this.useSupabase = import.meta.env.PROD || false;
     this.useRemote = false;
+    
+    // Testar conectividade do Supabase em produção
+    if (this.useSupabase) {
+      this.testSupabaseConnection();
+    }
+  }
+
+  private async testSupabaseConnection() {
+    try {
+      const isConnected = await testConnection();
+      if (!isConnected) {
+        console.warn('⚠️ Supabase não disponível, usando localStorage como fallback');
+        this.useSupabase = false;
+      }
+    } catch (error) {
+      console.error('❌ Erro ao conectar com Supabase, usando localStorage como fallback:', error);
+      this.useSupabase = false;
+    }
   }
 
   get users() {
@@ -923,87 +941,150 @@ class DatabaseService {
     return this.useSupabase ? supabaseDB : localDB;
   }
 
-  // Método específico para buscar consentimentos por CPF
+  // Método específico para buscar consentimentos por CPF com fallback
   async getConsentsByCpf(cpf: string): Promise<ConsentRequest[]> {
-    const service = this.useSupabase ? supabaseDB : localDB;
-    return service.getConsentsByCpf(cpf);
+    try {
+      const service = this.useSupabase ? supabaseDB : localDB;
+      return await service.getConsentsByCpf(cpf);
+    } catch (error) {
+      console.error('❌ Erro ao buscar consentimentos por CPF, usando fallback:', error);
+      if (this.useSupabase) {
+        // Fallback para localStorage se Supabase falhar
+        this.useSupabase = false;
+        return await localDB.getConsentsByCpf(cpf);
+      }
+      throw error;
+    }
   }
 
-  // Métodos para ações de consentimento
+  // Métodos para ações de consentimento com fallback robusto
   async approveConsent(id: string, scopes?: string[], tokenId?: string): Promise<ConsentRequest | null> {
-    if (this.useSupabase) {
-      try {
-        const supabaseConsent = await consentService.approve(id, scopes, tokenId);
-        return supabaseDB.mapConsentFromSupabase(supabaseConsent);
-      } catch (error) {
-        console.error('Erro ao aprovar consentimento:', error);
-        throw error;
+    try {
+      if (this.useSupabase) {
+        try {
+          const supabaseConsent = await consentService.approve(id, scopes, tokenId);
+          return supabaseDB.mapConsentFromSupabase(supabaseConsent);
+        } catch (error) {
+          console.error('❌ Erro ao aprovar consentimento no Supabase, usando fallback:', error);
+          this.useSupabase = false;
+          // Fallback para localStorage
+          const consent = await localDB.getConsents().then(consents => consents.find(c => c.id === id));
+          if (!consent) return null;
+
+          const updatedConsent = {
+            ...consent,
+            status: 'approved' as const,
+            approvedAt: new Date(),
+            scopes,
+            tokenId,
+            lastModified: new Date()
+          };
+
+          return localDB.updateConsent(id, updatedConsent);
+        }
+      } else {
+        // Implementação local
+        const consent = await localDB.getConsents().then(consents => consents.find(c => c.id === id));
+        if (!consent) return null;
+
+        const updatedConsent = {
+          ...consent,
+          status: 'approved' as const,
+          approvedAt: new Date(),
+          scopes,
+          tokenId,
+          lastModified: new Date()
+        };
+
+        return localDB.updateConsent(id, updatedConsent);
       }
-    } else {
-      // Implementação local
-      const consent = await localDB.getConsents().then(consents => consents.find(c => c.id === id));
-      if (!consent) return null;
-
-      const updatedConsent = {
-        ...consent,
-        status: 'approved' as const,
-        approvedAt: new Date(),
-        scopes,
-        tokenId,
-        lastModified: new Date()
-      };
-
-      return localDB.updateConsent(id, updatedConsent);
+    } catch (error) {
+      console.error('❌ Erro geral ao aprovar consentimento:', error);
+      throw error;
     }
   }
 
   async rejectConsent(id: string, reason?: string): Promise<ConsentRequest | null> {
-    if (this.useSupabase) {
-      try {
-        const supabaseConsent = await consentService.reject(id, reason);
-        return supabaseDB.mapConsentFromSupabase(supabaseConsent);
-      } catch (error) {
-        console.error('Erro ao rejeitar consentimento:', error);
-        throw error;
+    try {
+      if (this.useSupabase) {
+        try {
+          const supabaseConsent = await consentService.reject(id, reason);
+          return supabaseDB.mapConsentFromSupabase(supabaseConsent);
+        } catch (error) {
+          console.error('❌ Erro ao rejeitar consentimento no Supabase, usando fallback:', error);
+          this.useSupabase = false;
+          // Fallback para localStorage
+          const consent = await localDB.getConsents().then(consents => consents.find(c => c.id === id));
+          if (!consent) return null;
+
+          const updatedConsent = {
+            ...consent,
+            status: 'rejected' as const,
+            rejectedAt: new Date(),
+            lastModified: new Date()
+          };
+
+          return localDB.updateConsent(id, updatedConsent);
+        }
+      } else {
+        // Implementação local
+        const consent = await localDB.getConsents().then(consents => consents.find(c => c.id === id));
+        if (!consent) return null;
+
+        const updatedConsent = {
+          ...consent,
+          status: 'rejected' as const,
+          rejectedAt: new Date(),
+          lastModified: new Date()
+        };
+
+        return localDB.updateConsent(id, updatedConsent);
       }
-    } else {
-      // Implementação local
-      const consent = await localDB.getConsents().then(consents => consents.find(c => c.id === id));
-      if (!consent) return null;
-
-      const updatedConsent = {
-        ...consent,
-        status: 'rejected' as const,
-        rejectedAt: new Date(),
-        lastModified: new Date()
-      };
-
-      return localDB.updateConsent(id, updatedConsent);
+    } catch (error) {
+      console.error('❌ Erro geral ao rejeitar consentimento:', error);
+      throw error;
     }
   }
 
   async revokeConsent(id: string, reason?: string): Promise<ConsentRequest | null> {
-    if (this.useSupabase) {
-      try {
-        const supabaseConsent = await consentService.revoke(id, reason);
-        return supabaseDB.mapConsentFromSupabase(supabaseConsent);
-      } catch (error) {
-        console.error('Erro ao revogar consentimento:', error);
-        throw error;
+    try {
+      if (this.useSupabase) {
+        try {
+          const supabaseConsent = await consentService.revoke(id, reason);
+          return supabaseDB.mapConsentFromSupabase(supabaseConsent);
+        } catch (error) {
+          console.error('❌ Erro ao revogar consentimento no Supabase, usando fallback:', error);
+          this.useSupabase = false;
+          // Fallback para localStorage
+          const consent = await localDB.getConsents().then(consents => consents.find(c => c.id === id));
+          if (!consent) return null;
+
+          const updatedConsent = {
+            ...consent,
+            status: 'revoked' as const,
+            revokedAt: new Date(),
+            lastModified: new Date()
+          };
+
+          return localDB.updateConsent(id, updatedConsent);
+        }
+      } else {
+        // Implementação local
+        const consent = await localDB.getConsents().then(consents => consents.find(c => c.id === id));
+        if (!consent) return null;
+
+        const updatedConsent = {
+          ...consent,
+          status: 'revoked' as const,
+          revokedAt: new Date(),
+          lastModified: new Date()
+        };
+
+        return localDB.updateConsent(id, updatedConsent);
       }
-    } else {
-      // Implementação local
-      const consent = await localDB.getConsents().then(consents => consents.find(c => c.id === id));
-      if (!consent) return null;
-
-      const updatedConsent = {
-        ...consent,
-        status: 'revoked' as const,
-        revokedAt: new Date(),
-        lastModified: new Date()
-      };
-
-      return localDB.updateConsent(id, updatedConsent);
+    } catch (error) {
+      console.error('❌ Erro geral ao revogar consentimento:', error);
+      throw error;
     }
   }
 
@@ -1030,10 +1111,19 @@ class DatabaseService {
   }
 
   async testConnection(): Promise<boolean> {
-    if (this.useSupabase) {
-      return await supabaseDB.testConnection();
+    try {
+      if (this.useSupabase) {
+        return await supabaseDB.testConnection();
+      }
+      return true; // Local sempre funciona
+    } catch (error) {
+      console.error('❌ Erro ao testar conexão:', error);
+      if (this.useSupabase) {
+        console.warn('⚠️ Supabase não disponível, mudando para localStorage');
+        this.useSupabase = false;
+      }
+      return false;
     }
-    return true; // Local sempre funciona
   }
 }
 
