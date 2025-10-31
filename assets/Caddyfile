@@ -1,24 +1,22 @@
-:4173 {
-    root * /app/dist
-    encode gzip
-    
-    # Try to serve file directly, otherwise fallback to index.html for SPA
-    try_files {path} /index.html
-    
-    # Serve static files
-    file_server
-    
-    # Security headers
-    header {
-        X-Content-Type-Options nosniff
-        X-Frame-Options DENY
-        X-XSS-Protection "1; mode=block"
-        Referrer-Policy strict-origin-when-cross-origin
-    }
-    
-    # Cache static assets
-    @static {
-        path *.css *.js *.png *.jpg *.jpeg *.gif *.ico *.svg *.woff *.woff2
-    }
-    header @static Cache-Control "public, max-age=31536000, immutable"
+# assets/Caddyfile 
+ 
+:{$PORT:3000} { 
+  # logs no formato json (útil para observabilidade) 
+  log { 
+    format json 
+  } 
+
+  # healthcheck (Coolify pode apontar para /health) 
+  respond /health 200 
+
+  # raiz da app: pasta de saída do Vite 
+  root * /app/${NIXPACKS_SPA_OUTPUT_DIR} 
+
+  encode gzip 
+
+  # servidor de arquivos estáticos 
+  file_server 
+
+  # SPA fallback 
+  try_files {path} /index.html 
 }

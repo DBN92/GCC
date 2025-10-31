@@ -4,7 +4,8 @@
 # Mantém o comportamento atual do build 
 NODE_ENV = "production" 
 NPM_CONFIG_PRODUCTION = "false" 
-NIXPACKS_SPA_OUTPUT_DIR = "dist" 
+NIXPACKS_SPA_OUTPUT_DIR = "dist"
+PORT = "4173" 
 
 # Se quiser controlar a versão do Node aqui: 
 # (altere para nodejs_20 se seu projeto exigir Node 20) 
