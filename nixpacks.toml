@@ -17,5 +17,4 @@ dependsOn = ["install"]
 cmds = ["npm run build"]
 
 [start]
-# Usar Python HTTP server para servir arquivos estáticos
-cmd = "cd /app/dist && python3 -m http.server 4173 --bind 0.0.0.0"
+cmd = "npm run preview"
