@@ -16,12 +16,19 @@ function DataOwnerPortalContent() {
       // Verificar se já foi feito logout manual (flag no localStorage)
       const hasLoggedOut = localStorage.getItem('data_owner_logged_out');
       
-      // Limpar dados antigos que podem estar causando conflito
       if (!user && !isLoading && !hasLoggedOut) {
-        // Limpar possível usuário antigo com role incorreto
+        // LIMPEZA COMPLETA E AGRESSIVA DO LOCALSTORAGE
+        console.log('🧹 LIMPEZA COMPLETA DO LOCALSTORAGE...');
         localStorage.removeItem('lgpd_auth_user');
+        localStorage.removeItem('lgpd_users');
+        localStorage.removeItem('lgpd_consents');
+        localStorage.removeItem('lgpd_applicants');
+        
+        // Aguardar um pouco para garantir que a limpeza foi efetiva
+        await new Promise(resolve => setTimeout(resolve, 500));
         
         console.log('🔄 Iniciando login automático para CPF 12345678900');
+        console.log('📧 Email que será usado:', 'joao.silva.titular@exemplo.com');
         
         const govBrData = {
           cpf: '12345678900',
@@ -32,6 +39,7 @@ function DataOwnerPortalContent() {
         };
 
         try {
+          console.log('🚀 Chamando loginWithGovBr com dados:', govBrData);
           const success = await loginWithGovBr(govBrData);
           if (success) {
             console.log('✅ Login automático realizado com sucesso');

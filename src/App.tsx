@@ -4,25 +4,22 @@ import './App.css'
 function App() {
   return (
     <>
-      {/* INDICADOR DE DEPLOY SUPER VISÍVEL */}
+      {/* Deploy Test Indicator - Super Visível */}
       <div style={{
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         backgroundColor: '#ff0000',
-        color: '#ffffff',
-        padding: '20px',
+        color: 'white',
+        padding: '10px',
         textAlign: 'center',
-        fontSize: '24px',
         fontWeight: 'bold',
+        fontSize: '16px',
         zIndex: 9999,
-        border: '5px solid #000000',
-        boxShadow: '0 0 20px rgba(255,0,0,0.8)'
+        boxShadow: '0 2px 10px rgba(0,0,0,0.3)'
       }}>
-        🔥 DEPLOY TEST v5.0 FINAL - {new Date().toLocaleString('pt-BR')} 🔥
-        <br />
-        CORREÇÃO ROLE CONFLICT + NIXPACKS.TOML ATUALIZADO + COOLIFY CONFIG
+        🚀 DEPLOY TEST v6.0 - LIMPEZA AGRESSIVA LOCALSTORAGE + LOGS DETALHADOS ✅
       </div>
       <AppRouter />
     </>

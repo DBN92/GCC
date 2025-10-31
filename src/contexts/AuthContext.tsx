@@ -100,8 +100,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Check if user exists by CPF (you would need to add CPF field to User type)
-      console.log('🔍 Verificando usuário por CPF...');
+      console.log('🔍 Verificando usuário por email:', govBrData.email);
       let foundUser = await db.users.getUserByEmail(govBrData.email);
+      console.log('👤 Resultado da busca por email:', foundUser);
       
       if (!foundUser) {
         // Create new user with gov.br data
@@ -113,6 +114,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
           password: 'gov_br_auth' // Senha placeholder para usuários gov.br
         };
         
+        console.log('📝 Dados do novo usuário:', newUserData);
+        
         // Save user to database
         foundUser = await db.users.createUser(newUserData);
         console.log('✅ Usuário criado e salvo no banco:', foundUser);
@@ -120,6 +123,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       } else {
         // Update existing user with gov.br data
         console.log('🔄 Atualizando dados do usuário existente...');
+        console.log('⚠️  ATENÇÃO: Usuário já existe com role:', foundUser.role);
         foundUser.name = govBrData.name;
         foundUser.updatedAt = new Date();
         console.log('🔍 AuthContext - User updated:', foundUser);
@@ -128,6 +132,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       if (foundUser && foundUser.active) {
         console.log('✅ Login gov.br bem-sucedido para:', foundUser.name);
         console.log('🔍 AuthContext - Setting user in state:', foundUser);
+        console.log('🎯 ROLE FINAL DO USUÁRIO:', foundUser.role);
         setUser(foundUser);
         localStorage.setItem(LOCAL_STORAGE_KEYS.AUTH_USER, foundUser.id);
         setIsLoading(false);
