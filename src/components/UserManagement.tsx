@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { User, UserRole, CreateUserRequest, UpdateUserRequest } from '@/types/user';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Switch } from '@/components/ui/switch';
+import { User, UserRole, CreateUserRequest, UpdateUserRequest } from "../types/user";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
+import { Badge } from "./ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./ui/table";
+import { Switch } from "./ui/switch";
 import { Plus, Edit, Trash2, Users, Shield, Headphones, Crown, Loader2, Mail, Calendar, UserCheck, UserX, Search } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { db } from '@/services/database';
+import { useToast } from "../hooks/use-toast";
+import { db } from "../services/database";
 
 // Mock de usuários (em produção viria de uma API)
 const INITIAL_USERS: User[] = [

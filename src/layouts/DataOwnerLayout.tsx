@@ -1,9 +1,9 @@
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from "../components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../components/ui/dropdown-menu";
 import { User, LogOut, Shield, Home, FileText, Settings } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import Logo from '@/components/Logo';
+import { useAuth } from "../contexts/AuthContext";
+import Logo from "../components/Logo";
 
 interface DataOwnerLayoutProps {
   children: React.ReactNode;

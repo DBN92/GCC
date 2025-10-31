@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Button } from "../components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../components/ui/dropdown-menu";
 import { User, LogOut, Settings, BarChart3, Users, FileText, Home, Building } from 'lucide-react';
-import { useAuth, usePermissions } from '@/contexts/AuthContext';
-import Logo from '@/components/Logo';
+import { useAuth, usePermissions } from "../contexts/AuthContext";
+import Logo from "../components/Logo";
 
 interface ConsentSystemLayoutProps {
   children: React.ReactNode;

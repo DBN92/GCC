@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { useAuth } from "../contexts/AuthContext";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import { Alert, AlertDescription } from "../components/ui/alert";
 import { Loader2, Shield, ExternalLink, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useNavigate, Link } from 'react-router-dom';
 

@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User } from '@/types/user';
-import { db } from '@/services/database';
-import { LOCAL_STORAGE_KEYS } from '@/config/database';
+import { User } from "../types/user";
+import { db } from "../services/database";
+import { LOCAL_STORAGE_KEYS } from "../config/database";
 
 interface GovBrUserData {
   cpf: string;

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import ConsentSystemLayout from "@/layouts/ConsentSystemLayout";
-import { LoginForm } from "@/components/LoginForm";
-import Index from "@/pages/Index";
-import NotFound from "@/pages/NotFound";
+import { AuthProvider, useAuth } from "../contexts/AuthContext";
+import ConsentSystemLayout from "../layouts/ConsentSystemLayout";
+import { LoginForm } from "../components/LoginForm";
+import Index from "../pages/Index";
+import NotFound from "../pages/NotFound";
 
 const ConsentSystemContent: React.FC = () => {
   const { user } = useAuth();

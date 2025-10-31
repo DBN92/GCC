@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { Shield, CheckCircle2, XCircle, Clock, FileCheck, Key, LogOut, User } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import ConsentRequestForm from "@/components/ConsentRequestForm";
-import ConsentList from "@/components/ConsentList";
-import StatsOverview from "@/components/StatsOverview";
-import DataOwnerConsents from "@/components/DataOwnerConsents";
-import Reports from "@/components/Reports";
-import ApplicantManagement from "@/components/ApplicantManagement";
-import { UserManagement } from "@/components/UserManagement";
-import SupabaseTest from "@/components/SupabaseTest";
-import Logo from "@/components/Logo";
-import { useAuth, usePermissions } from "@/contexts/AuthContext";
-import { db } from "@/services/database";
+import { Button } from "../components/ui/button";
+import { Card } from "../components/ui/card";
+import { Badge } from "../components/ui/badge";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../components/ui/dropdown-menu";
+import ConsentRequestForm from "../components/ConsentRequestForm";
+import ConsentList from "../components/ConsentList";
+import StatsOverview from "../components/StatsOverview";
+import DataOwnerConsents from "../components/DataOwnerConsents";
+import Reports from "../components/Reports";
+import ApplicantManagement from "../components/ApplicantManagement";
+import { UserManagement } from "../components/UserManagement";
+import SupabaseTest from "../components/SupabaseTest";
+import Logo from "../components/Logo";
+import { useAuth, usePermissions } from "../contexts/AuthContext";
+import { db } from "../services/database";
 
 export interface ConsentRequest {
   id: string;

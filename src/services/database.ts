@@ -1,8 +1,8 @@
-import { LOCAL_STORAGE_KEYS, API_CONFIG } from '@/config/database';
-import { User, CreateUserRequest, UpdateUserRequest, UserRole } from '@/types/user';
-import { ConsentRequest, Applicant } from '@/pages/Index';
-import { consentService, userService, testConnection } from './supabaseService';
-import { supabase } from '@/lib/supabase';
+import { LOCAL_STORAGE_KEYS, API_CONFIG } from "../config/database";
+import { User, CreateUserRequest, UpdateUserRequest, UserRole } from "../types/user";
+import { ConsentRequest, Applicant } from "../pages/Index";
+import { consentService, userService, testConnection } from "./supabaseService";
+import { supabase } from "../lib/supabase";
 
 // Classe para gerenciar a base de dados local (localStorage)
 class LocalDatabaseService {

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ConsentRequest } from "@/pages/Index";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
+import { ConsentRequest } from "../pages/Index";
 import { 
   CheckCircle2, 
   XCircle, 
@@ -26,7 +26,7 @@ import {
   Users,
   Activity
 } from "lucide-react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./ui/collapsible";
 
 interface ConsentListProps {
   consents: ConsentRequest[];

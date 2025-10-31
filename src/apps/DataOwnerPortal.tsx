@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import { LoginForm } from "@/components/LoginForm";
-import DataOwnerLayout from "@/layouts/DataOwnerLayout";
-import GovBrLogin from "@/pages/GovBrLogin";
-import DataOwnerDashboard from "@/pages/DataOwnerDashboard";
-import NotFound from "@/pages/NotFound";
+import { AuthProvider, useAuth } from "../contexts/AuthContext";
+import { LoginForm } from "../components/LoginForm";
+import DataOwnerLayout from "../layouts/DataOwnerLayout";
+import GovBrLogin from "../pages/GovBrLogin";
+import DataOwnerDashboard from "../pages/DataOwnerDashboard";
+import NotFound from "../pages/NotFound";
 
 function DataOwnerPortalContent() {
   const { user, loginWithGovBr, isLoading } = useAuth();
