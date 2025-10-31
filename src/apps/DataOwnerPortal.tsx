@@ -13,30 +13,30 @@ function DataOwnerPortalContent() {
   // Login automático com CPF 12345678900 (apenas na primeira visita)
   useEffect(() => {
     const performAutoLogin = async () => {
-      try {
-        // Verificar se já foi feito logout manual (flag no localStorage)
-        const hasLoggedOut = localStorage.getItem('data_owner_logged_out');
+      // Verificar se já foi feito logout manual (flag no localStorage)
+      const hasLoggedOut = localStorage.getItem('data_owner_logged_out');
+      
+      if (!user && !isLoading && !hasLoggedOut) {
+        console.log('🔄 Iniciando login automático para CPF 12345678900');
         
-        if (!user && !isLoading && !hasLoggedOut) {
-          console.log('🔄 Iniciando login automático para CPF 12345678900');
-          
-          const govBrData = {
-            cpf: '12345678900',
-            name: 'João Silva',
-            email: 'joao.silva@exemplo.com',
-            phone: '(11) 99999-9999',
-            birthDate: '1990-01-01'
-          };
+        const govBrData = {
+          cpf: '12345678900',
+          name: 'João Silva',
+          email: 'joao.silva@exemplo.com',
+          phone: '(11) 99999-9999',
+          birthDate: '1990-01-01'
+        };
 
+        try {
           const success = await loginWithGovBr(govBrData);
           if (success) {
             console.log('✅ Login automático realizado com sucesso');
           } else {
             console.log('❌ Falha no login automático');
           }
+        } catch (error) {
+          console.error('💥 Erro no login automático:', error);
         }
-      } catch (error) {
-        console.error('💥 Erro no login automático:', error);
       }
     };
 

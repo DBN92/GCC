@@ -5,16 +5,13 @@
 NODE_ENV = "production" 
 NPM_CONFIG_PRODUCTION = "false" 
 NIXPACKS_SPA_OUTPUT_DIR = "dist"
-PORT = "4173"
-# Supabase Configuration
-VITE_SUPABASE_URL = "https://hjjzecodtfnerkxslzpd.supabase.co"
-VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhqanplY29kdGZuZXJreHNsenBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDM4MzQsImV4cCI6MjA3NzQxOTgzNH0.sZ9NG-06i-5YTM3nNrYiQ5LDx9yQBh0YBb0WicGmams" 
+PORT = "4173" 
 
 # Se quiser controlar a versão do Node aqui: 
 # (altere para nodejs_20 se seu projeto exigir Node 20) 
 # Dica: mantenha alinhado com seu lockfile. 
 [phases.setup] 
-nixPkgs = ["nodejs_20", "bun"] 
+nixPkgs = ["nodejs_22", "bun"] 
 # Pacotes úteis durante o build (opcional) 
 aptPkgs = ["curl", "wget"] 
 
@@ -23,8 +20,7 @@ dependsOn = ["setup"]
 nixPkgs = ["caddy"] 
 # Formata o Caddyfile que vamos incluir em /assets 
 cmds = [ 
-  "cp /assets/Caddyfile /tmp/Caddyfile",
-  "caddy fmt --overwrite /tmp/Caddyfile" 
+  "caddy fmt --overwrite /assets/Caddyfile" 
 ] 
 
 [phases.install] 
@@ -40,4 +36,4 @@ cmds = ["bun run build"]
 
 [start] 
 # Servir a pasta dist com Caddy (SPA-friendly) 
-cmd = "exec caddy run --config /tmp/Caddyfile --adapter caddyfile 2>&1"
+cmd = "exec caddy run --config /assets/Caddyfile --adapter caddyfile 2>&1"
