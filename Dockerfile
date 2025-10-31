@@ -35,6 +35,9 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
+# Install curl for health check
+RUN apk add --no-cache curl
+
 # Create a non-root user
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -49,5 +52,9 @@ USER nextjs
 EXPOSE 4173
 
 ENV PORT=4173
+
+# Add health check
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost:4173/ || exit 1
 
 CMD ["npm", "run", "preview", "--", "--host", "0.0.0.0", "--port", "4173"]
