@@ -1,39 +1,21 @@
-# nixpacks.toml 
- 
-[variables] 
-# Mantém o comportamento atual do build 
-NODE_ENV = "production" 
-NPM_CONFIG_PRODUCTION = "false" 
-NIXPACKS_SPA_OUTPUT_DIR = "dist"
-PORT = "4173" 
+# nixpacks.toml - Configuração simplificada
 
-# Se quiser controlar a versão do Node aqui: 
-# (altere para nodejs_20 se seu projeto exigir Node 20) 
-# Dica: mantenha alinhado com seu lockfile. 
-[phases.setup] 
-nixPkgs = ["nodejs_22", "bun"] 
-# Pacotes úteis durante o build (opcional) 
-aptPkgs = ["curl", "wget"] 
+[variables]
+NODE_ENV = "production"
+NPM_CONFIG_PRODUCTION = "false"
+PORT = "4173"
 
-[phases.caddy] 
-dependsOn = ["setup"] 
-nixPkgs = ["caddy"] 
-# Formata o Caddyfile que vamos incluir em /assets 
-cmds = [ 
-  "caddy fmt --overwrite /assets/Caddyfile" 
-] 
+[phases.setup]
+nixPkgs = ["nodejs_22", "python3"]
 
-[phases.install] 
-dependsOn = ["setup"] 
-# Use npm ci para reprodutibilidade (mantém seu fluxo atual) 
-cmds = ["npm ci"] 
-# cache de bun é opcional aqui; npm já é rápido com layer cache 
+[phases.install]
+dependsOn = ["setup"]
+cmds = ["npm ci"]
 
-[phases.build] 
-dependsOn = ["install"] 
-# Build com Vite (mantendo bun, como no seu log) 
-cmds = ["bun run build"] 
+[phases.build]
+dependsOn = ["install"]
+cmds = ["npm run build"]
 
-[start] 
-# Servir a pasta dist com Caddy (SPA-friendly) 
-cmd = "exec caddy run --config /assets/Caddyfile --adapter caddyfile 2>&1"
+[start]
+# Usar Python HTTP server para servir arquivos estáticos
+cmd = "cd /app/dist && python3 -m http.server 4173 --bind 0.0.0.0"
