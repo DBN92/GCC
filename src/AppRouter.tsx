@@ -39,19 +39,14 @@ const AppRouter = () => {
       console.log('  searchParams:', searchParams.toString());
       console.log('  full URL:', window.location.href);
       
-      // Verificar configuração global primeiro
-      const globalConfig = (window as any).APP_CONFIG;
-      console.log('  globalConfig:', globalConfig);
-      if (globalConfig?.forceApp) {
-        console.log('🔧 GLOBAL CONFIG: Forçando app via configuração global:', globalConfig.forceApp);
-        if (globalConfig.forceApp === 'data-owner-portal') {
-          setCurrentApp(AppType.DATA_OWNER_PORTAL);
-          return;
-        }
-        if (globalConfig.forceApp === 'consent-system') {
-          setCurrentApp(AppType.CONSENT_SYSTEM);
-          return;
-        }
+      // PRIMEIRA PRIORIDADE: Detectar hostname de produção - FORÇAR SEMPRE
+      if (hostname === 'gccimonitore.danieltechsolutions.com' || 
+          hostname.includes('gccimonitore') || 
+          hostname.includes('danieltechsolutions')) {
+        console.log('✅ FORÇANDO Portal do Titular para hostname de produção:', hostname);
+        console.log('🚀 Carregando Portal do Titular OBRIGATORIAMENTE');
+        setCurrentApp(AppType.DATA_OWNER_PORTAL);
+        return;
       }
       
       // Verificar parâmetro de URL para forçar uma aplicação específica
@@ -81,10 +76,12 @@ const AppRouter = () => {
         return;
       }
 
-      // Detectar hostname específico de produção
-      if (hostname === 'gccimonitore.danieltechsolutions.com') {
-        console.log('✅ Detectado hostname de produção: DATA_OWNER_PORTAL');
-        console.log('🚀 Carregando Portal do Titular para produção');
+      // Detectar hostname específico de produção - FORÇAR SEMPRE
+      if (hostname === 'gccimonitore.danieltechsolutions.com' || 
+          hostname.includes('gccimonitore') || 
+          hostname.includes('danieltechsolutions')) {
+        console.log('✅ FORÇANDO Portal do Titular para hostname de produção:', hostname);
+        console.log('🚀 Carregando Portal do Titular OBRIGATORIAMENTE');
         setCurrentApp(AppType.DATA_OWNER_PORTAL);
         return;
       }
