@@ -1,0 +1,24 @@
+# Configuração otimizada para Coolify
+# Baseada nas melhores práticas do DEPLOYMENT.md
+
+[variables]
+NODE_ENV = "production"
+NPM_CONFIG_PRODUCTION = "false"
+PORT = "4173"
+# Supabase Configuration
+VITE_SUPABASE_URL = "https://hjjzecodtfnerkxslzpd.supabase.co"
+VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhqanplY29kdGZuZXJreHNsenBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDM4MzQsImV4cCI6MjA3NzQxOTgzNH0.sZ9NG-06i-5YTM3nNrYiQ5LDx9yQBh0YBb0WicGmams"
+
+[phases.setup]
+nixPkgs = ["nodejs_20"]
+
+[phases.install]
+dependsOn = ["setup"]
+cmds = ["npm ci --include=dev"]
+
+[phases.build]
+dependsOn = ["install"]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm run preview -- --host 0.0.0.0 --port 4173"
