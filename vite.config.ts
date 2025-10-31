@@ -3,6 +3,9 @@ import react from "@vitejs/plugin-react-swc";
 
 export default defineConfig({
   plugins: [react()],
+  define: {
+    global: 'globalThis',
+  },
   build: {
     chunkSizeWarningLimit: 1024, // opcional, só pra reduzir o warning
     rollupOptions: {
