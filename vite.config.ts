@@ -1,51 +1,38 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
-  },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
-  resolve: {
-    alias: {
-      "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  define: {
-    global: 'globalThis',
-  },
+export default defineConfig({
+  plugins: [react()],
   build: {
-    target: 'esnext',
-    minify: 'esbuild',
-    sourcemap: false,
-    cssCodeSplit: true,
+    chunkSizeWarningLimit: 1024, // opcional, só pra reduzir o warning
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs', '@radix-ui/react-select', '@radix-ui/react-popover'],
-          router: ['react-router-dom'],
-          supabase: ['@supabase/supabase-js'],
-          query: ['@tanstack/react-query'],
-          forms: ['react-hook-form', '@hookform/resolvers', 'zod'],
-          charts: ['recharts'],
-          utils: ['clsx', 'tailwind-merge', 'class-variance-authority'],
+          react: ["react", "react-dom"],
+          tanstack: ["@tanstack/react-query"],
+          radix: [
+            "@radix-ui/react-tooltip",
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-select",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-toast",
+            "@radix-ui/react-presence",
+            "@radix-ui/react-portal",
+            "@radix-ui/react-popper",
+            "@radix-ui/react-label",
+            "@radix-ui/react-switch",
+            "@radix-ui/react-collapsible",
+            "@radix-ui/react-checkbox",
+            "@radix-ui/react-menu",
+            "@radix-ui/react-collection",
+            "@radix-ui/react-roving-focus",
+            "@radix-ui/react-dismissable-layer",
+            "@radix-ui/react-focus-guards",
+            "@radix-ui/react-focus-scope",
+          ],
+          theming: ["next-themes", "sonner"],
         },
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
       },
     },
-    chunkSizeWarningLimit: 1000,
-    assetsInlineLimit: 4096,
   },
-  preview: {
-    host: '0.0.0.0',
-    port: 4173,
-    strictPort: true,
-  },
-}));
+});
