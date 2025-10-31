@@ -5,7 +5,10 @@
 NODE_ENV = "production" 
 NPM_CONFIG_PRODUCTION = "false" 
 NIXPACKS_SPA_OUTPUT_DIR = "dist"
-PORT = "4173" 
+PORT = "4173"
+# Supabase Configuration
+VITE_SUPABASE_URL = "https://hjjzecodtfnerkxslzpd.supabase.co"
+VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhqanplY29kdGZuZXJreHNsenBkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE4NDM4MzQsImV4cCI6MjA3NzQxOTgzNH0.sZ9NG-06i-5YTM3nNrYiQ5LDx9yQBh0YBb0WicGmams" 
 
 # Se quiser controlar a versão do Node aqui: 
 # (altere para nodejs_20 se seu projeto exigir Node 20) 
