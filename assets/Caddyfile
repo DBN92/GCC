@@ -1,6 +1,6 @@
 # assets/Caddyfile 
  
-:{$PORT:3000} { 
+:{$PORT:4173} { 
   # logs no formato json (útil para observabilidade) 
   log { 
     format json 
@@ -10,7 +10,7 @@
   respond /health 200 
 
   # raiz da app: pasta de saída do Vite 
-  root * /app/${NIXPACKS_SPA_OUTPUT_DIR} 
+  root * /app/dist 
 
   encode gzip 
 
