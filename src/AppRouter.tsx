@@ -97,6 +97,13 @@ const AppRouter = () => {
       //   return;
       // }
 
+      // Fallback para produção: se nenhuma detecção funcionou, usar Portal do Titular como padrão
+      if (hostname.includes('danieltechsolutions.com') || hostname.includes('gccimonitore')) {
+        console.log('🔧 FALLBACK: Forçando Portal do Titular para domínio de produção');
+        setCurrentApp(AppType.DATA_OWNER_PORTAL);
+        return;
+      }
+
       // Default: mostrar seletor de aplicação
       console.log('🔄 Nenhuma detecção automática - mostrando seletor');
       setCurrentApp(null);
